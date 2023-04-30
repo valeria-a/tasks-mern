@@ -39,5 +39,9 @@ export const createTaskController = (req: Request, res: Response) => {
         res.status(result ? 200 : 400).json(returnJson)
     } catch (error: any) {
         console.error(`Error in createTaskController: ${error}`)
+        res.status(400).json({
+            status: 'error',
+            message: error
+        })
     }
 }

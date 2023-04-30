@@ -18,6 +18,6 @@ const getTasksHandler = (user_id) => {
 exports.getTasksHandler = getTasksHandler;
 const createTaskHandler = (task) => {
     const dbResult = (0, taskDAL_1.createTaskDAL)(task);
-    return true;
+    return dbResult;
 };
 exports.createTaskHandler = createTaskHandler;

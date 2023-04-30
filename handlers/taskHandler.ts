@@ -17,6 +17,6 @@ export const getTasksHandler = (user_id: string): ITaskDisplay[]=>{
 
 export const createTaskHandler = (task: ITask) => {
     const dbResult = createTaskDAL(task);
-    return true;
+    return dbResult;
 
 }
