@@ -1,23 +1,19 @@
-import {checkIfCollectionExist} from "../../connection";
-import {Db} from "mongodb";
-
-export const USERS_COLLECTION_NAME = 'users';
-
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createUsersCollection = exports.USERS_COLLECTION_NAME = void 0;
+const connection_1 = require("../../connection");
+exports.USERS_COLLECTION_NAME = 'users';
 const DROP_COLLECTION = false;
-
-export const createUsersCollection = async (db: Db) => {
+const createUsersCollection = async (db) => {
     try {
-        const isCollectionExist: boolean = await checkIfCollectionExist(
-            db,
-            USERS_COLLECTION_NAME
-        );
+        const isCollectionExist = await (0, connection_1.checkIfCollectionExist)(db, exports.USERS_COLLECTION_NAME);
         if (isCollectionExist && DROP_COLLECTION) {
-            await db.dropCollection(USERS_COLLECTION_NAME);
-        } else if (isCollectionExist) {
+            await db.dropCollection(exports.USERS_COLLECTION_NAME);
+        }
+        else if (isCollectionExist) {
             return;
         }
-        const usersCollection = await db.createCollection(USERS_COLLECTION_NAME, {
+        const usersCollection = await db.createCollection(exports.USERS_COLLECTION_NAME, {
             validator: {
                 $jsonSchema: {
                     bsonType: 'object',
@@ -30,8 +26,7 @@ export const createUsersCollection = async (db: Db) => {
                         email: {
                             bsonType: 'string',
                             description: 'must be a string and is required',
-                            pattern:
-                                '^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$',
+                            pattern: '^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$',
                         },
                         password: {
                             bsonType: 'string',
@@ -48,13 +43,14 @@ export const createUsersCollection = async (db: Db) => {
             validationAction: 'error',
             validationLevel: 'strict',
         });
-
         if (usersCollection) {
             // index the email field
             await usersCollection.createIndex({ email: 1 }, { unique: true });
         }
-    } catch (error: any) {
+    }
+    catch (error) {
         console.error(`Error creating users collection: ${error.stack}`);
         throw error;
     }
 };
+exports.createUsersCollection = createUsersCollection;

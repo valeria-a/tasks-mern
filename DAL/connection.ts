@@ -1,3 +1,5 @@
+import {createUsersCollection} from "./collections/users/schema";
+
 export const checkIfCollectionExist = async (
     db: Db,
     collectionName: string
@@ -9,7 +11,7 @@ export const checkIfCollectionExist = async (
 };
 
 export const createCollections = async (db: Db): Promise<boolean> => {
-    // await createUsersCollection(db);
+    await createUsersCollection(db);
     return true;
 };
 

@@ -1,20 +1,17 @@
 "use strict";
-// export const checkIfCollectionExist = async (
-//     db: Db,
-//     collectionName: string
-// ): Promise<boolean> => {
-//     const collections = await db.collections();
-//     return collections.some(
-//         (collection) => collection.collectionName === collectionName
-//     );
-// };
-//
-// export const createCollections = async (db): Promise<boolean> => {
-//     // await createUsersCollection(db);
-//     return true;
-// };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.establishDBConnection = void 0;
+exports.establishDBConnection = exports.createCollections = exports.checkIfCollectionExist = void 0;
+const schema_1 = require("./collections/users/schema");
+const checkIfCollectionExist = async (db, collectionName) => {
+    const collections = await db.collections();
+    return collections.some((collection) => collection.collectionName === collectionName);
+};
+exports.checkIfCollectionExist = checkIfCollectionExist;
+const createCollections = async (db) => {
+    await (0, schema_1.createUsersCollection)(db);
+    return true;
+};
+exports.createCollections = createCollections;
 const mongodb_1 = require("mongodb");
 const MONGO_URI = "mongodb+srv://valeria:VjXHSaNCGZXDVyIs@taskmanagermongocluster.uibbw3b.mongodb.net/?retryWrites=true&w=majority";
 const DB_NAME = "taskManagerDB";

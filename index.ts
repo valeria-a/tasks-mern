@@ -4,7 +4,8 @@ import helmet from 'helmet'
 import compression from 'compression'
 import {taskRouter} from "./routers/taskRouter";
 import {Db} from "mongodb";
-import {establishDBConnection} from "./DAL/connection";
+import {createCollections, establishDBConnection} from "./DAL/connection";
+import {insertNewUser} from "./DAL/collections/users/queries";
 
 // initiate the express app
 const app:Express = express();
@@ -18,11 +19,12 @@ app.use(express.json())
 
 app.use('/tasks', taskRouter);
 
-let db: Db;
+export let db: Db;
 
 const connectToDb = async () => {
     try {
         db = await establishDBConnection()
+        await createCollections(db);
     } catch (error: any) {
         throw error
     }
@@ -36,6 +38,13 @@ connectToDb().then(async () => {
     app.listen(3000, () => {
         console.log('express app is running on 3000')
     })
+    const user1 = {
+        email: 'user1@gmail.com',
+        password: '12345678',
+        firstName: 'First'
+    }
+    const result = await insertNewUser(user1)
+    console.log(result)
 }).catch((error: any) => {
     console.log('Failed connecting to DB')
     throw error;

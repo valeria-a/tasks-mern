@@ -3,12 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.db = void 0;
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const compression_1 = __importDefault(require("compression"));
 const taskRouter_1 = require("./routers/taskRouter");
 const connection_1 = require("./DAL/connection");
+const queries_1 = require("./DAL/collections/users/queries");
 // initiate the express app
 const app = (0, express_1.default)();
 //use the middleware
@@ -17,10 +19,10 @@ app.use((0, helmet_1.default)());
 app.use((0, compression_1.default)());
 app.use(express_1.default.json());
 app.use('/tasks', taskRouter_1.taskRouter);
-let db;
 const connectToDb = async () => {
     try {
-        db = await (0, connection_1.establishDBConnection)();
+        exports.db = await (0, connection_1.establishDBConnection)();
+        await (0, connection_1.createCollections)(exports.db);
     }
     catch (error) {
         throw error;
@@ -32,6 +34,13 @@ connectToDb().then(async () => {
     app.listen(3000, () => {
         console.log('express app is running on 3000');
     });
+    const user1 = {
+        email: 'user1@gmail.com',
+        password: '12345678',
+        firstName: 'First'
+    };
+    const result = await (0, queries_1.insertNewUser)(user1);
+    console.log(result);
 }).catch((error) => {
     console.log('Failed connecting to DB');
     throw error;
