@@ -3,11 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.signupController = void 0;
 const bodyValidations_1 = require("../middlewares/bodyValidations");
 const userHandler_1 = require("../handlers/userHandler");
-const signupController = (req, res) => {
+const signupController = async (req, res) => {
     try {
         const body = bodyValidations_1.signuupBodySchema.parse(req.body);
         const { email, password } = body;
-        const result = (0, userHandler_1.signupHandler)({
+        const result = await (0, userHandler_1.signupHandler)({
             email,
             password
         });

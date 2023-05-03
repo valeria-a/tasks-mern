@@ -30,7 +30,8 @@ const bcrypt = __importStar(require("bcrypt"));
 const insertNewUser = async (user) => {
     const usersCollection = index_1.db.collection(schema_1.USERS_COLLECTION_NAME);
     try {
-        user.password = bcrypt.hash(user.password, 10);
+        user.password = await bcrypt.hash(user.password, 10);
+        console.log('inserting user', user);
         const result = await usersCollection.insertOne(user);
         return { success: true, ...result };
     }

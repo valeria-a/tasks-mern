@@ -18,8 +18,8 @@ app.use((0, cors_1.default)());
 app.use((0, helmet_1.default)());
 app.use((0, compression_1.default)());
 app.use(express_1.default.json());
-app.use('api/tasks', taskRouter_1.taskRouter);
-app.use('api/users', userRouter_1.userRouter);
+app.use('/api/tasks', taskRouter_1.taskRouter);
+app.use('/api/users', userRouter_1.userRouter);
 const connectToDb = async () => {
     try {
         exports.db = await (0, connection_1.establishDBConnection)();
@@ -33,7 +33,7 @@ connectToDb().then(async () => {
     console.log('Connected to DB');
     //launching the app
     app.listen(8000, () => {
-        console.log('express app is running on 3000');
+        console.log('express app is running on 8000');
     });
     // const user1 = {
     //     email: 'user1@gmail.com',

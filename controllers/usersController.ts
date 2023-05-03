@@ -3,11 +3,11 @@ import {createTaskBodySchema, signuupBodySchema} from "../middlewares/bodyValida
 import {createTaskHandler} from "../handlers/taskHandler";
 import {signupHandler} from "../handlers/userHandler";
 
-export const signupController = (req: Request, res: Response) => {
+export const signupController = async (req: Request, res: Response) => {
     try{
         const body = signuupBodySchema.parse(req.body)
         const {email, password} = body;
-        const result: any = signupHandler({
+        const result = await signupHandler({
             email,
             password
         })

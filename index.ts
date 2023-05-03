@@ -18,8 +18,8 @@ app.use(helmet())
 app.use(compression())
 app.use(express.json())
 
-app.use('api/tasks', taskRouter);
-app.use('api/users', userRouter);
+app.use('/api/tasks', taskRouter);
+app.use('/api/users', userRouter);
 
 export let db: Db;
 
@@ -38,7 +38,7 @@ connectToDb().then(async () => {
 
     //launching the app
     app.listen(8000, () => {
-        console.log('express app is running on 3000')
+        console.log('express app is running on 8000')
     })
     // const user1 = {
     //     email: 'user1@gmail.com',
