@@ -7,7 +7,7 @@ export const createTaskBodySchema = z.object({
     user_id: z.string()
 })
 
-export const signuupBodySchema = z.object({
+export const authBodySchema = z.object({
     email: z.string(),
     password: z.string()
 })

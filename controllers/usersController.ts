@@ -1,11 +1,12 @@
 import {Request, Response} from "express";
-import {createTaskBodySchema, signuupBodySchema} from "../middlewares/bodyValidations";
-import {createTaskHandler} from "../handlers/taskHandler";
-import {signupHandler} from "../handlers/userHandler";
+import {authBodySchema} from "../middlewares/bodyValidations";
+import {loginHandler, signupHandler} from "../handlers/userHandler";
+import {ILoginHandlerResult} from "../interfaces/users";
+import {createTaskController} from "./taskController";
 
 export const signupController = async (req: Request, res: Response) => {
     try{
-        const body = signuupBodySchema.parse(req.body)
+        const body = authBodySchema.parse(req.body)
         const {email, password} = body;
         const result = await signupHandler({
             email,
@@ -17,9 +18,27 @@ export const signupController = async (req: Request, res: Response) => {
         }
         res.status(result ? 200 : 400).json(returnJson)
     } catch (error: any) {
-        console.error(`Error in createTaskController: ${error}`)
-        res.status(400).json({
-            status: 'error',
+        console.error(`Error in ${signupController.name}: ${error.stack}`)
+        res.status(500).json({
+            status: 'fail',
+            message: error
+        })
+    }
+}
+
+export const loginController = async (req:Request, res:Response) => {
+    try {
+        const body = authBodySchema.parse(req.body)
+        const {email, password} = body;
+        const result: ILoginHandlerResult = await loginHandler({
+            email,
+            password
+        })
+        res.status(result ? 200 : 400).json(result)
+    } catch (error: any) {
+        console.error(`Error in ${loginController.name}: ${error.stack}`)
+        res.status(500).json({
+            status: 'fail',
             message: error
         })
     }

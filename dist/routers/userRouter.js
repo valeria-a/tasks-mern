@@ -5,3 +5,4 @@ const express_1 = require("express");
 const usersController_1 = require("../controllers/usersController");
 exports.userRouter = (0, express_1.Router)();
 exports.userRouter.post("/signup", usersController_1.signupController);
+exports.userRouter.post("/login", usersController_1.loginController);

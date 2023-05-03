@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signuupBodySchema = exports.createTaskBodySchema = void 0;
+exports.authBodySchema = exports.createTaskBodySchema = void 0;
 const z = __importStar(require("zod"));
 exports.createTaskBodySchema = z.object({
     title: z.string().max(128).min(1),
@@ -31,7 +31,7 @@ exports.createTaskBodySchema = z.object({
     isDone: z.boolean(),
     user_id: z.string()
 });
-exports.signuupBodySchema = z.object({
+exports.authBodySchema = z.object({
     email: z.string(),
     password: z.string()
 });
