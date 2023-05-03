@@ -1,12 +1,14 @@
-import express, {Express} from "express";
+import express, {Express, NextFunction, Request, Response} from "express";
 import cors from 'cors';
 import helmet from 'helmet'
 import compression from 'compression'
-import {taskRouter} from "./routers/taskRouter";
 import {Db} from "mongodb";
 import {createCollections, establishDBConnection} from "./DAL/connection";
-import {insertNewUser} from "./DAL/collections/users/queries";
+
+import {taskRouter} from "./routers/taskRouter";
 import {userRouter} from "./routers/userRouter";
+import {requestMiddleware} from "./middlewares/general";
+
 
 // initiate the express app
 const app:Express = express();
@@ -17,6 +19,13 @@ app.use(cors())
 app.use(helmet())
 app.use(compression())
 app.use(express.json())
+
+//our custom middleware
+app.use(requestMiddleware)
+// app.use(((req:Request, res:Response, next:NextFunction) => {
+//     console.log(`url: ${req.url} | body: ${JSON.stringify(req.body)} | query_parms: ${JSON.stringify(req.params)}`)
+//     next()
+// }))
 
 app.use('/api/tasks', taskRouter);
 app.use('/api/users', userRouter);
@@ -40,14 +49,7 @@ connectToDb().then(async () => {
     app.listen(8000, () => {
         console.log('express app is running on 8000')
     })
-    // const user1 = {
-    //     email: 'user1@gmail.com',
-    //     password: '12345678',
-    //     firstName: 'First'
-    // }
-    // const result = await insertNewUser(user1)
-    // console.log(result)
 }).catch((error: any) => {
-    console.log('Failed connecting to DB')
+    console.log('Failed connecting to DB', error)
     throw error;
 })

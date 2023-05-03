@@ -8,9 +8,10 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const compression_1 = __importDefault(require("compression"));
-const taskRouter_1 = require("./routers/taskRouter");
 const connection_1 = require("./DAL/connection");
+const taskRouter_1 = require("./routers/taskRouter");
 const userRouter_1 = require("./routers/userRouter");
+const general_1 = require("./middlewares/general");
 // initiate the express app
 const app = (0, express_1.default)();
 //use the middleware
@@ -18,6 +19,12 @@ app.use((0, cors_1.default)());
 app.use((0, helmet_1.default)());
 app.use((0, compression_1.default)());
 app.use(express_1.default.json());
+//our custom middleware
+app.use(general_1.requestMiddleware);
+// app.use(((req:Request, res:Response, next:NextFunction) => {
+//     console.log(`url: ${req.url} | body: ${JSON.stringify(req.body)} | query_parms: ${JSON.stringify(req.params)}`)
+//     next()
+// }))
 app.use('/api/tasks', taskRouter_1.taskRouter);
 app.use('/api/users', userRouter_1.userRouter);
 const connectToDb = async () => {
@@ -35,14 +42,7 @@ connectToDb().then(async () => {
     app.listen(8000, () => {
         console.log('express app is running on 8000');
     });
-    // const user1 = {
-    //     email: 'user1@gmail.com',
-    //     password: '12345678',
-    //     firstName: 'First'
-    // }
-    // const result = await insertNewUser(user1)
-    // console.log(result)
 }).catch((error) => {
-    console.log('Failed connecting to DB');
+    console.log('Failed connecting to DB', error);
     throw error;
 });
