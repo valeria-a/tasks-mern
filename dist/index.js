@@ -10,7 +10,7 @@ const helmet_1 = __importDefault(require("helmet"));
 const compression_1 = __importDefault(require("compression"));
 const taskRouter_1 = require("./routers/taskRouter");
 const connection_1 = require("./DAL/connection");
-const queries_1 = require("./DAL/collections/users/queries");
+const userRouter_1 = require("./routers/userRouter");
 // initiate the express app
 const app = (0, express_1.default)();
 //use the middleware
@@ -18,7 +18,8 @@ app.use((0, cors_1.default)());
 app.use((0, helmet_1.default)());
 app.use((0, compression_1.default)());
 app.use(express_1.default.json());
-app.use('/tasks', taskRouter_1.taskRouter);
+app.use('api/tasks', taskRouter_1.taskRouter);
+app.use('api/users', userRouter_1.userRouter);
 const connectToDb = async () => {
     try {
         exports.db = await (0, connection_1.establishDBConnection)();
@@ -31,16 +32,16 @@ const connectToDb = async () => {
 connectToDb().then(async () => {
     console.log('Connected to DB');
     //launching the app
-    app.listen(3000, () => {
+    app.listen(8000, () => {
         console.log('express app is running on 3000');
     });
-    const user1 = {
-        email: 'user1@gmail.com',
-        password: '12345678',
-        firstName: 'First'
-    };
-    const result = await (0, queries_1.insertNewUser)(user1);
-    console.log(result);
+    // const user1 = {
+    //     email: 'user1@gmail.com',
+    //     password: '12345678',
+    //     firstName: 'First'
+    // }
+    // const result = await insertNewUser(user1)
+    // console.log(result)
 }).catch((error) => {
     console.log('Failed connecting to DB');
     throw error;

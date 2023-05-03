@@ -6,3 +6,8 @@ export const createTaskBodySchema = z.object({
     isDone: z.boolean(),
     user_id: z.string()
 })
+
+export const signuupBodySchema = z.object({
+    email: z.string(),
+    password: z.string()
+})

@@ -20,7 +20,7 @@ const createUsersCollection = async (db) => {
                     required: [
                         'email',
                         'password',
-                        'firstName',
+                        // 'firstName',
                     ],
                     properties: {
                         email: {
@@ -32,11 +32,11 @@ const createUsersCollection = async (db) => {
                             bsonType: 'string',
                             description: 'must be a string and is required',
                         },
-                        firstName: {
-                            bsonType: 'string',
-                            description: 'must be a string and is required',
-                            pattern: '^[a-zA-Z\\s]{1,}$', // TODO: think it through
-                        },
+                        // firstName: {
+                        //     bsonType: 'string',
+                        //     description: 'must be a string and is required',
+                        //     pattern: '^[a-zA-Z\\s]{1,}$', // TODO: think it through
+                        // },
                     },
                 },
             },
